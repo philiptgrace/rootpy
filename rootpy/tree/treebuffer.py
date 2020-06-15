@@ -179,7 +179,7 @@ class TreeBuffer(OrderedDict):
     def __setitem__(self, name, value):
         # for a key to be used as an attr it must be a valid Python identifier
         fixed_name = TreeBuffer.__clean(name)
-        if fixed_name in dir(self) or fixed_name.startswith('_'):
+        if fixed_name in dir(self) or (fixed_name.startswith('_') and not fixed_name.startswith('__')):
             raise ValueError("illegal branch name: `{0}`".format(name))
         if fixed_name != name:
             self._fixed_names[fixed_name] = name

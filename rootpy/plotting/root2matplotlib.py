@@ -635,6 +635,7 @@ def step(h, logy=None, axes=None, **kwargs):
     _set_defaults(h, kwargs, ['common', 'line'])
     if kwargs.get('color') is None:
         kwargs['color'] = h.GetLineColor('mpl')
+    kwargs['linewidth'] = 0.5
     y = np.array(list(h.y()) + [0.])
     if logy:
         np.clip(y, 1E-300, 1E300, out=y)
