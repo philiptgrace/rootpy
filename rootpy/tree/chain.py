@@ -42,6 +42,7 @@ class BaseTreeChain(object):
         self._file = None
         self._events = events
         self._total_events = 0
+        self._scale = None
         self._ignore_unsupported = ignore_unsupported
         self._initialized = False
         if filters is None:
@@ -225,11 +226,27 @@ class BaseTreeChain(object):
             self._tree.SetCacheLearnEntries(self._learn_entries)
         self._tree.read_branches_on_demand = self._read_branches_on_demand
         self._tree.always_read(self._always_read)
+        if self._scale is not None:
+            self._tree.Scale(self._scale)
         self.weight = self._tree.GetWeight()
         for target, args in self._filechange_hooks:
             # run any user-defined functions
             target(*args, name=self._name, file=self._file, tree=self._tree)
         return True
+
+    def Scale(self, value):
+        """
+        Add a scaling to each Tree from each file.
+
+        Parameters
+        ----------
+        value : int, float
+            Scale the Trees weight by this value
+        """
+        if self._scale is None:
+            self._scale = value
+        else:
+            self._scale *= value
 
 
 class TreeChain(BaseTreeChain):
